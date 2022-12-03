@@ -1,9 +1,9 @@
-package day1
+package day01
 
 import java.io.File
 
 fun findTotalCaloriesPerElf() =
-    File("src/main/kotlin/day1/input1.txt")
+    File("src/main/kotlin/day01/input.txt")
         .readText()
         .split(Regex("\n\n"))
         .fold(listOf<Int>()) { currentList, newElfCalories ->
@@ -15,7 +15,7 @@ fun findElfCarryingMostCalories() = findTotalCaloriesPerElf().first()
 
 fun findTopThreeElvesCarryingMostCalories() = findTotalCaloriesPerElf().subList(0,3).sum()
 
-fun solveDay1Problem() {
+fun main() {
     println("The elf carrying most calories is carrying: ${findElfCarryingMostCalories()}")
     println("The top 3 elves carrying most calories are carrying: ${findTopThreeElvesCarryingMostCalories()}")
 }

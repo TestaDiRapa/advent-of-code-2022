@@ -1,4 +1,4 @@
-package day2
+package day02
 
 import java.io.File
 import java.lang.Exception
@@ -65,7 +65,7 @@ class Match(
 }
 
 fun getListOfMatchesFromFile() =
-    File("src/main/kotlin/day2/input.txt")
+    File("src/main/kotlin/day022/input.txt")
         .readLines()
         .fold(listOf<Pair<String, String>>()) { moves, it ->
             val (opponentMove, yourMove) = it.split(" ")
@@ -96,7 +96,7 @@ fun getTotalScore() = interpretPairsAsMatches().sumOf { it.score() }
 
 fun getTotalScoreWithOutcome() = interpretPairsAsResults().sumOf { it.score() }
 
-fun solveDay2Problem() {
+fun main() {
     println("The total score if the second row is the move is: ${getTotalScore()}")
     println("The total score if the second row is the outcome is: ${getTotalScoreWithOutcome()}")
 }
