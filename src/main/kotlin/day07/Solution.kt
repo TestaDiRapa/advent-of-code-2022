@@ -1,6 +1,7 @@
 package day07
 
 import java.io.File
+import kotlin.system.measureTimeMillis
 
 data class DirectoryTree (
     val name: String,
@@ -75,7 +76,10 @@ fun parseFileAndBuildTree() =
         }.second
 
 fun main() {
-    val tree = parseFileAndBuildTree()
-    println("The sum of the directory which size is under 100000 is ${sumDirectoriesUnderSize(tree, 100000)}")
-    println("The size of the smallest directory to delete is ${findSmallerDirectoryToDelete(tree)}")
+    val elapsed = measureTimeMillis {
+        val tree = parseFileAndBuildTree()
+        println("The sum of the directory which size is under 100000 is ${sumDirectoriesUnderSize(tree, 100000)}")
+        println("The size of the smallest directory to delete is ${findSmallerDirectoryToDelete(tree)}")
+    }
+    println("The whole thing needed $elapsed to finish")
 }
