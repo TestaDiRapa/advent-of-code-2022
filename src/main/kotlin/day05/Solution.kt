@@ -86,6 +86,6 @@ fun findFinalConfigurationMovingMultipleCratesAtTime() =
         }
 
 fun main() {
-    println("The top crates at the end using the CrateMover 9000 0are: ${findFinalConfigurationMovingOneCrateAtTime()}")
-    println("The top crates at the end using the CrateMover 9001 0are: ${findFinalConfigurationMovingMultipleCratesAtTime()}")
+    println("The top crates at the end using the CrateMover 9000 are: ${findFinalConfigurationMovingOneCrateAtTime()}")
+    println("The top crates at the end using the CrateMover 9001 are: ${findFinalConfigurationMovingMultipleCratesAtTime()}")
 }
