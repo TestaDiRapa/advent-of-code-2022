@@ -2,13 +2,12 @@ package day11
 
 import java.io.File
 import java.lang.Exception
-import java.math.BigInteger
 
 data class Monkey(
     val id: Int,
-    val items: List<BigInteger>,
-    val operation: (BigInteger) -> BigInteger,
-    val nextMonkey: (BigInteger) -> Int,
+    val items: List<Long>,
+    val operation: (Long) -> Long,
+    val nextMonkey: (Long) -> Int,
     val monkeyActivity: Int = 0
 ) {
 
@@ -18,7 +17,7 @@ data class Monkey(
             if (verbose) println("Monkey $id inspects an item with a worry level of $item.")
             val newLevel = operation(item)
             if (verbose) println("\tWorry level is now $newLevel.")
-            val dividedLevel = newLevel/reduceLevel.toBigInteger()
+            val dividedLevel = newLevel/reduceLevel.toLong()
             if (verbose) println("\tMonkey gets bored with item. Worry level is divided by 3 to $dividedLevel.")
             val receiverMonkeyId = nextMonkey(dividedLevel)
             if (verbose) println("\tItem with worry level $dividedLevel is thrown to monkey $receiverMonkeyId.")
@@ -34,14 +33,14 @@ data class Monkey(
 
 }
 
-fun parseNextMonkey(input: String): (BigInteger) -> Int {
+fun parseNextMonkey(input: String): (Long) -> Int {
     val divisor = Regex("Test: divisible by ([0-9]+)").find(input)!!.groupValues[1].toInt()
     val ifTrue = Regex("If true: throw to monkey ([0-9]+)").find(input)!!.groupValues[1].toInt()
     val ifFalse = Regex("If false: throw to monkey ([0-9]+)").find(input)!!.groupValues[1].toInt()
-    return { it -> if (it%divisor.toBigInteger() == 0.toBigInteger()) ifTrue else ifFalse}
+    return { it -> if (it%divisor.toLong() == 0.toLong()) ifTrue else ifFalse}
 }
 
-fun parseOperation(rawOperation: String): (BigInteger) -> BigInteger {
+fun parseOperation(rawOperation: String): (Long) -> Long {
     Regex("new = ([0-9a-z]+) ([*+-]) ([0-9a-z]+)")
         .find(rawOperation)!!
         .groupValues
@@ -57,8 +56,8 @@ fun parseOperation(rawOperation: String): (BigInteger) -> BigInteger {
                 }
             } else {
                 when(op) {
-                    "+" -> { it -> it + second.toBigInteger() }
-                    "*" -> { it -> it * second.toBigInteger() }
+                    "+" -> { it -> it + second.toLong() }
+                    "*" -> { it -> it * second.toLong() }
                     else -> throw Exception("Operation not supported")
                 }
             }
@@ -73,7 +72,7 @@ fun parseInputFile() =
             val monkeyId = Regex("Monkey ([0-9]+)").find(rawMonkey)!!.groupValues[1].toInt()
             val items = Regex("[0-9]+").findAll(
                 Regex("Starting items: ([0-9]+,? ?)+").find(rawMonkey)!!.value
-            ).toList().map { it.value.toBigInteger() }
+            ).toList().map { it.value.toLong() }
             val operation = parseOperation(
                 Regex("Operation: new = [a-z0-9]+ [*+-] [a-z0-9]+").find(rawMonkey)!!.value
             )
@@ -101,5 +100,4 @@ fun findMonkeyBusinessAfterNthRound(round: Int, worryLevel: Int): Int {
 
 fun main() {
     println("The level of monkey business after 20 rounds is ${findMonkeyBusinessAfterNthRound(20, 3)}")
-    println("The level of monkey business after 10000 rounds is ${findMonkeyBusinessAfterNthRound(10000, 1)}")
 }
