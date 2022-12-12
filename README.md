@@ -7,8 +7,8 @@
 * [X] Day 5
 * [X] Day 6
 * [X] Day 7
-* [X] Day 8
-* [X] Day 9
-* [X] Day 10
+* [X] Day 8 :evergreen_tree:
+* [X] Day 9 :snake:
+* [X] Day 10 :tv:
 * [X] Day 11 :monkey_face:
-* [X] Day 1
+* [ ] Day 12 :mount_fuji:
