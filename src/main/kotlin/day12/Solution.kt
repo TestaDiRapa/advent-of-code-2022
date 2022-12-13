@@ -1,13 +1,14 @@
 package day12
 
+import kotlinx.coroutines.currentCoroutineContext
 import java.io.File
-import kotlin.math.cos
+import kotlin.math.exp
 
 fun Char.distance(other: Char) =
     if (this == 'E') other - 'z'
     else if (this == 'S') other - 'a'
-    else if (other == 'E') this - 'z'
-    else if (other == 'S') this - 'a'
+    else if (other == 'E') 'z' - this
+    else if (other == 'S') 'a' - this
     else other - this
 
 data class DijkstraParams(
@@ -29,8 +30,13 @@ data class Distance(
 }
 
 data class Node(
+    val height: Char,
     val links: Map<Pair<Int, Int>, Int>
-)
+) {
+
+    fun distance(node: Node) = height.distance(node.height)
+
+}
 
 data class Graph(
     val nodes: Map<Pair<Int, Int>, Node> = emptyMap(),
@@ -40,12 +46,21 @@ data class Graph(
 
     fun addNode(x: Int, y: Int, value: Char, vararg links: Triple<Int, Int, Char>?): Graph {
         val newNode = Node(
-            links.filterNotNull().fold(emptyMap()) { acc, it -> acc + (Pair(it.first, it.second) to value.distance(it.third))}
+            when (value) { 'S' -> 'a' 'E' -> 'z' else -> value},
+            links
+                .filterNotNull()
+                .fold(emptyMap()) { acc, it -> acc + (Pair(it.first, it.second) to 1)}
         )
-        return if (value  == 'S') this.copy(nodes = nodes + (Pair(x,y) to newNode), start = Pair(x, y))
-            else if (value == 'E') this.copy(nodes = nodes + (Pair(x,y) to newNode), end = Pair(x, y))
-            else this.copy(nodes = nodes + (Pair(x,y) to newNode))
+        return when(value) {
+            'S' -> this.copy(nodes = nodes + (Pair(x,y) to newNode), start = Pair(x, y))
+            'E' -> this.copy(nodes = nodes + (Pair(x,y) to newNode), end = Pair(x, y))
+            else -> this.copy(nodes = nodes + (Pair(x,y) to newNode))
+        }
     }
+
+    private tailrec fun stepsToStart(end: Pair<Int, Int>, nodes: Map<Pair<Int, Int>, Pair<Int, Int>?>, acc: Int = 0): Int =
+        if(nodes[end] != null) stepsToStart(nodes[end]!!, nodes, acc+1)
+        else acc
 
     fun findShortestPathWithDijkstra(): Int {
         val params = DijkstraParams()
@@ -56,7 +71,7 @@ data class Graph(
         }
         while(params.queue.contains(end)) {
             val minVertex = params.dist.filter { params.queue.contains(it.key) }.minBy { it.value.distance }.key
-            nodes[minVertex]!!.links.entries.filter { it.value == 1 || it.value == 0 }.onEach {
+            nodes[minVertex]!!.links.filter { nodes[minVertex]!!.distance(nodes[it.key]!!) <= 1 }.entries.onEach {
                 if (params.queue.contains(it.key)) {
                     val newDist = params.dist[minVertex]!! + it.value
                     if (newDist.isLess(params.dist[it.key]!!)) {
@@ -67,8 +82,22 @@ data class Graph(
             }
             params.queue.remove(minVertex)
         }
-        println(params)
-        return 0
+        return stepsToStart(end, params.prev)
+    }
+
+    fun findShortestPathWithBFS(): Int {
+        val queue = mutableListOf(Pair(end,0))
+        val explored = mutableSetOf(end)
+        var current = queue.first()
+        while(queue.isNotEmpty() && nodes[queue.first().first]!!.height != 'a') {
+            current = queue.first()
+            val validLinks = nodes[current.first]!!.links.keys
+                .filter { !explored.contains(it) && nodes[it]!!.distance(nodes[current.first]!!) <= 1 }
+            queue.addAll(validLinks.map { Pair(it, current.second+1) })
+            explored.addAll(validLinks)
+            queue.removeAt(0)
+        }
+        return current.second
     }
 
 }
@@ -97,6 +126,6 @@ fun getGraph() =
         }
 
 fun main() {
-    val g = getGraph()
-    println(g.findShortestPathWithDijkstra())
+    println("The shortest path is made up of ${getGraph().findShortestPathWithDijkstra()} steps")
+    println("The shortest hiking path is made up of ${getGraph().findShortestPathWithBFS()} steps")
 }
