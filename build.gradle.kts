@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.7.20"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
     application
 }
 
@@ -13,8 +14,6 @@ repositories {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-client-core:2.1.3")
-    implementation("io.ktor:ktor-client-cio:2.1.3")
     testImplementation(kotlin("test"))
 }
 
@@ -27,5 +26,5 @@ tasks.withType<KotlinCompile> {
 }
 
 application {
-    mainClass.set("MainKt")
+    mainClass.set("day14.MainKt")
 }
