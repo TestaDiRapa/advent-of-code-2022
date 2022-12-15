@@ -12,4 +12,16 @@
 * [X] Day 10 :tv:
 * [X] Day 11 :monkey_face:
 * [X] Day 12 :mount_fuji:
-* [ ] Day 13 :signal_strength:
+* [X] Day 13 :signal_strength:
+* [X] Day 14 :hourglass:
+* [ ] Day 15
+* [ ] Day 16
+* [ ] Day 17
+* [ ] Day 18
+* [ ] Day 19
+* [ ] Day 20
+* [ ] Day 21
+* [ ] Day 22
+* [ ] Day 23
+* [ ] Day 24
+* [ ] Day 25
