@@ -1,8 +1,6 @@
 package day12
 
-import kotlinx.coroutines.currentCoroutineContext
 import java.io.File
-import kotlin.math.exp
 
 fun Char.distance(other: Char) =
     if (this == 'E') other - 'z'
